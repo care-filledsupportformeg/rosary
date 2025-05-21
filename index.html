@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Rosary Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .mystery-card {
+            background-color: #f3e8ff; /* Light purple for all mystery cards */
+            border-left: 5px solid #8b5cf6; /* Purple border for all mystery cards */
+        }
+        .prayer-section { /* For starting and concluding prayers */
+            background-color: #e0f2fe; /* Light blue */
+            border-left: 5px solid #38bdf8; /* Blue */
+        }
+        .prayer-text {
+            color: #374151; /* Gray-700 */
+        }
+        .bead {
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            background-color: #93c5fd; /* Blue-300 for Hail Mary beads */
+            margin: 0.125rem;
+            display: inline-block;
+        }
+        .our-father-bead {
+            width: 1.25rem;
+            height: 1.25rem;
+            background-color: #60a5fa; /* Blue-400 for Our Father beads */
+        }
+        .glory-be-bead {
+            width: 1.15rem;
+            height: 1.15rem;
+            background-color: #fcd34d; /* Amber-300 for Glory Be beads */
+        }
+        .section-title { /* For main section titles like "Starting Prayers", "Concluding Prayers" */
+            color: #4f46e5; /* Indigo-600 */
+        }
+        .mystery-set-title { /* For titles like "The Joyful Mysteries" */
+            color: #7c3aed; /* Violet-600 */
+        }
+        .mystery-title { /* For individual mystery titles like "The Annunciation" */
+            color: #6d28d9; /* Violet-700 */
+        }
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            border: none;
+            background-color: transparent;
+            font-weight: 500;
+            color: #6b7280; /* Gray-500 */
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .tab-button.active {
+            color: #4f46e5; /* Indigo-600 */
+            border-bottom-color: #4f46e5; /* Indigo-600 */
+            font-weight: 600;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="max-w-3xl mx-auto p-4 sm:p-6 lg:p-8">
+        <header class="text-center mb-6">
+            <h1 class="text-3xl font-bold section-title">The Holy Rosary</h1>
+            <p id="currentDateText" class="text-sm text-gray-500 mt-2"></p>
+            <p id="currentDayMysteryText" class="text-lg text-purple-700 font-semibold mt-1"></p>
+        </header>
+
+        <div class="mb-6">
+            <div class="flex flex-wrap justify-center border-b border-gray-300">
+                <button id="tabJoyful" class="tab-button" data-mystery="joyful">Joyful (Mon, Sat)</button>
+                <button id="tabLuminous" class="tab-button" data-mystery="luminous">Luminous (Thu)</button>
+                <button id="tabSorrowful" class="tab-button" data-mystery="sorrowful">Sorrowful (Tue, Fri)</button>
+                <button id="tabGlorious" class="tab-button" data-mystery="glorious">Glorious (Wed, Sun)</button>
+            </div>
+        </div>
+
+        <section id="startingPrayers" class="mb-6 p-4 rounded-lg shadow-md prayer-section">
+            <h2 class="text-2xl font-semibold mb-3 section-title">Starting Prayers</h2>
+            <div class="mb-3 p-3 bg-white rounded-md shadow-sm">
+                <h3 class="font-semibold text-lg text-sky-700">1. The Sign of the Cross</h3>
+                <p class="prayer-text mt-1">In the name of the Father, and of the Son, and of the Holy Spirit. Amen.</p>
+            </div>
+            <div class="mb-3 p-3 bg-white rounded-md shadow-sm">
+                <h3 class="font-semibold text-lg text-sky-700">2. The Apostles' Creed</h3>
+                <p class="prayer-text mt-1">I believe in God, the Father Almighty, Creator of heaven and earth; and in Jesus Christ, His only Son, our Lord; Who was conceived by the Holy Spirit, born of the Virgin Mary, suffered under Pontius Pilate, was crucified, died, and was buried. He descended into hell; the third day He arose again from the dead; He ascended into heaven, and sits at the right hand of God, the Father Almighty; from thence He shall come to judge the living and the dead. I believe in the Holy Spirit, the holy Catholic Church, the communion of saints, the forgiveness of sins, the resurrection of the body, and life everlasting. Amen.</p>
+            </div>
+            <div class="mb-3 p-3 bg-white rounded-md shadow-sm">
+                <h3 class="font-semibold text-lg text-sky-700">3. The Our Father</h3>
+                <div class="mt-1 flex items-center">
+                    <div class="bead our-father-bead mr-2"></div>
+                    <p class="prayer-text">Our Father, Who art in heaven, hallowed be Thy name...</p>
+                </div>
+            </div>
+            <div class="mb-3 p-3 bg-white rounded-md shadow-sm">
+                <h3 class="font-semibold text-lg text-sky-700">4. Three Hail Marys (for Faith, Hope, and Charity)</h3>
+                <div class="mt-1">
+                    <div><span class="bead"></span><span class="prayer-text ml-1">Hail Mary, full of grace...</span></div>
+                    <div><span class="bead"></span><span class="prayer-text ml-1">Hail Mary, full of grace...</span></div>
+                    <div><span class="bead"></span><span class="prayer-text ml-1">Hail Mary, full of grace...</span></div>
+                </div>
+            </div>
+            <div class="p-3 bg-white rounded-md shadow-sm">
+                <h3 class="font-semibold text-lg text-sky-700">5. The Glory Be</h3>
+                <div class="mt-1 flex items-center">
+                     <div class="bead glory-be-bead mr-2"></div>
+                    <p class="prayer-text">Glory be to the Father, and to the Son, and to the Holy Spirit. As it was in the beginning, is now, and ever shall be, world without end. Amen.</p>
+                </div>
+            </div>
+            <div class="mt-3 p-3 bg-white rounded-md shadow-sm">
+                <h3 class="font-semibold text-lg text-sky-700">(Optional) Fatima Prayer</h3>
+                <p class="prayer-text mt-1">O my Jesus, forgive us our sins, save us from the fires of hell, lead all souls to Heaven, especially those in most need of Thy mercy.</p>
+            </div>
+        </section>
+
+        <section id="joyfulMysteriesContent" class="mystery-content-section hidden">
+            <h2 class="text-2xl font-semibold mb-4 text-center mystery-set-title">The Joyful Mysteries</h2>
+            <div class="mb-6 p-4 rounded-lg shadow-md mystery-card">
+                <h3 class="text-xl font-semibold mb-3 mystery-title">1. The Annunciation</h3>
+                <p class="italic text-sm text-purple-700 mb-3">The Archangel Gabriel announces to Mary that she shall conceive a child by the power of the Holy Spirit.</p>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead our-father-bead mr-2"></div><p class="prayer-text font-medium">Our Father...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><p class="prayer-text font-medium mb-1">10 Hail Marys:</p><div class="flex flex-wrap"><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead glory-be-bead mr-2"></div><p class="prayer-text font-medium">Glory Be...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm"><p class="prayer-text font-medium">(Optional) Fatima Prayer: O my Jesus...</p></div>
+            </div>
+            <div class="mb-6 p-4 rounded-lg shadow-md mystery-card">
+                <h3 class="text-xl font-semibold mb-3 mystery-title">2. The Visitation</h3>
+                <p class="italic text-sm text-purple-700 mb-3">Mary visits her cousin Elizabeth, who is pregnant with John the Baptist.</p>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead our-father-bead mr-2"></div><p class="prayer-text font-medium">Our Father...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><p class="prayer-text font-medium mb-1">10 Hail Marys:</p><div class="flex flex-wrap"><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead glory-be-bead mr-2"></div><p class="prayer-text font-medium">Glory Be...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm"><p class="prayer-text font-medium">(Optional) Fatima Prayer: O my Jesus...</p></div>
+            </div>
+            <div class="mb-6 p-4 rounded-lg shadow-md mystery-card">
+                <h3 class="text-xl font-semibold mb-3 mystery-title">3. The Nativity</h3>
+                <p class="italic text-sm text-purple-700 mb-3">Jesus is born in Bethlehem.</p>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead our-father-bead mr-2"></div><p class="prayer-text font-medium">Our Father...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><p class="prayer-text font-medium mb-1">10 Hail Marys:</p><div class="flex flex-wrap"><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead glory-be-bead mr-2"></div><p class="prayer-text font-medium">Glory Be...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm"><p class="prayer-text font-medium">(Optional) Fatima Prayer: O my Jesus...</p></div>
+            </div>
+            <div class="mb-6 p-4 rounded-lg shadow-md mystery-card">
+                <h3 class="text-xl font-semibold mb-3 mystery-title">4. The Presentation</h3>
+                <p class="italic text-sm text-purple-700 mb-3">Mary and Joseph present Jesus in the Temple.</p>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead our-father-bead mr-2"></div><p class="prayer-text font-medium">Our Father...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><p class="prayer-text font-medium mb-1">10 Hail Marys:</p><div class="flex flex-wrap"><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead glory-be-bead mr-2"></div><p class="prayer-text font-medium">Glory Be...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm"><p class="prayer-text font-medium">(Optional) Fatima Prayer: O my Jesus...</p></div>
+            </div>
+            <div class="mb-6 p-4 rounded-lg shadow-md mystery-card">
+                <h3 class="text-xl font-semibold mb-3 mystery-title">5. The Finding in the Temple</h3>
+                <p class="italic text-sm text-purple-700 mb-3">Jesus is found in the Temple, teaching the elders.</p>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead our-father-bead mr-2"></div><p class="prayer-text font-medium">Our Father...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><p class="prayer-text font-medium mb-1">10 Hail Marys:</p><div class="flex flex-wrap"><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead glory-be-bead mr-2"></div><p class="prayer-text font-medium">Glory Be...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm"><p class="prayer-text font-medium">(Optional) Fatima Prayer: O my Jesus...</p></div>
+            </div>
+        </section>
+
+        <section id="luminousMysteriesContent" class="mystery-content-section hidden">
+            <h2 class="text-2xl font-semibold mb-4 text-center mystery-set-title">The Luminous Mysteries</h2>
+            <div class="mb-6 p-4 rounded-lg shadow-md mystery-card">
+                <h3 class="text-xl font-semibold mb-3 mystery-title">1. The Baptism of Jesus in the Jordan</h3>
+                <p class="italic text-sm text-purple-700 mb-3">God proclaims Jesus is His beloved Son.</p>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead our-father-bead mr-2"></div><p class="prayer-text font-medium">Our Father...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><p class="prayer-text font-medium mb-1">10 Hail Marys:</p><div class="flex flex-wrap"><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead glory-be-bead mr-2"></div><p class="prayer-text font-medium">Glory Be...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm"><p class="prayer-text font-medium">(Optional) Fatima Prayer: O my Jesus...</p></div>
+            </div>
+            <div class="mb-6 p-4 rounded-lg shadow-md mystery-card">
+                <h3 class="text-xl font-semibold mb-3 mystery-title">2. The Wedding at Cana</h3>
+                <p class="italic text-sm text-purple-700 mb-3">Jesus performs His first miracle, turning water into wine.</p>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead our-father-bead mr-2"></div><p class="prayer-text font-medium">Our Father...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><p class="prayer-text font-medium mb-1">10 Hail Marys:</p><div class="flex flex-wrap"><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead glory-be-bead mr-2"></div><p class="prayer-text font-medium">Glory Be...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm"><p class="prayer-text font-medium">(Optional) Fatima Prayer: O my Jesus...</p></div>
+            </div>
+            <div class="mb-6 p-4 rounded-lg shadow-md mystery-card">
+                <h3 class="text-xl font-semibold mb-3 mystery-title">3. The Proclamation of the Kingdom of God</h3>
+                <p class="italic text-sm text-purple-700 mb-3">Jesus calls all to conversion and service to the Kingdom.</p>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead our-father-bead mr-2"></div><p class="prayer-text font-medium">Our Father...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><p class="prayer-text font-medium mb-1">10 Hail Marys:</p><div class="flex flex-wrap"><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead glory-be-bead mr-2"></div><p class="prayer-text font-medium">Glory Be...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm"><p class="prayer-text font-medium">(Optional) Fatima Prayer: O my Jesus...</p></div>
+            </div>
+            <div class="mb-6 p-4 rounded-lg shadow-md mystery-card">
+                <h3 class="text-xl font-semibold mb-3 mystery-title">4. The Transfiguration</h3>
+                <p class="italic text-sm text-purple-700 mb-3">Jesus is transfigured on the mountain, revealing His glory.</p>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead our-father-bead mr-2"></div><p class="prayer-text font-medium">Our Father...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><p class="prayer-text font-medium mb-1">10 Hail Marys:</p><div class="flex flex-wrap"><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead glory-be-bead mr-2"></div><p class="prayer-text font-medium">Glory Be...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm"><p class="prayer-text font-medium">(Optional) Fatima Prayer: O my Jesus...</p></div>
+            </div>
+            <div class="mb-6 p-4 rounded-lg shadow-md mystery-card">
+                <h3 class="text-xl font-semibold mb-3 mystery-title">5. The Institution of the Eucharist</h3>
+                <p class="italic text-sm text-purple-700 mb-3">Jesus offers His Body and Blood at the Last Supper.</p>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead our-father-bead mr-2"></div><p class="prayer-text font-medium">Our Father...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><p class="prayer-text font-medium mb-1">10 Hail Marys:</p><div class="flex flex-wrap"><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead glory-be-bead mr-2"></div><p class="prayer-text font-medium">Glory Be...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm"><p class="prayer-text font-medium">(Optional) Fatima Prayer: O my Jesus...</p></div>
+            </div>
+        </section>
+
+        <section id="sorrowfulMysteriesContent" class="mystery-content-section hidden">
+            <h2 class="text-2xl font-semibold mb-4 text-center mystery-set-title">The Sorrowful Mysteries</h2>
+            <div class="mb-6 p-4 rounded-lg shadow-md mystery-card">
+                <h3 class="text-xl font-semibold mb-3 mystery-title">1. The Agony in the Garden</h3>
+                <p class="italic text-sm text-purple-700 mb-3">Jesus prays in the Garden of Gethsemane on the night before He dies.</p>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead our-father-bead mr-2"></div><p class="prayer-text font-medium">Our Father...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><p class="prayer-text font-medium mb-1">10 Hail Marys:</p><div class="flex flex-wrap"><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead glory-be-bead mr-2"></div><p class="prayer-text font-medium">Glory Be...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm"><p class="prayer-text font-medium">(Optional) Fatima Prayer: O my Jesus...</p></div>
+            </div>
+            <div class="mb-6 p-4 rounded-lg shadow-md mystery-card">
+                <h3 class="text-xl font-semibold mb-3 mystery-title">2. The Scourging at the Pillar</h3>
+                <p class="italic text-sm text-purple-700 mb-3">Jesus is cruelly scourged by Roman soldiers.</p>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead our-father-bead mr-2"></div><p class="prayer-text font-medium">Our Father...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><p class="prayer-text font-medium mb-1">10 Hail Marys:</p><div class="flex flex-wrap"><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead glory-be-bead mr-2"></div><p class="prayer-text font-medium">Glory Be...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm"><p class="prayer-text font-medium">(Optional) Fatima Prayer: O my Jesus...</p></div>
+            </div>
+            <div class="mb-6 p-4 rounded-lg shadow-md mystery-card">
+                <h3 class="text-xl font-semibold mb-3 mystery-title">3. The Crowning with Thorns</h3>
+                <p class="italic text-sm text-purple-700 mb-3">Soldiers mock Jesus and place a painful crown of thorns on His head.</p>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead our-father-bead mr-2"></div><p class="prayer-text font-medium">Our Father...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><p class="prayer-text font-medium mb-1">10 Hail Marys:</p><div class="flex flex-wrap"><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead glory-be-bead mr-2"></div><p class="prayer-text font-medium">Glory Be...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm"><p class="prayer-text font-medium">(Optional) Fatima Prayer: O my Jesus...</p></div>
+            </div>
+            <div class="mb-6 p-4 rounded-lg shadow-md mystery-card">
+                <h3 class="text-xl font-semibold mb-3 mystery-title">4. The Carrying of the Cross</h3>
+                <p class="italic text-sm text-purple-700 mb-3">Jesus carries the heavy cross to Calvary.</p>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead our-father-bead mr-2"></div><p class="prayer-text font-medium">Our Father...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><p class="prayer-text font-medium mb-1">10 Hail Marys:</p><div class="flex flex-wrap"><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead glory-be-bead mr-2"></div><p class="prayer-text font-medium">Glory Be...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm"><p class="prayer-text font-medium">(Optional) Fatima Prayer: O my Jesus...</p></div>
+            </div>
+            <div class="mb-6 p-4 rounded-lg shadow-md mystery-card">
+                <h3 class="text-xl font-semibold mb-3 mystery-title">5. The Crucifixion and Death of Our Lord</h3>
+                <p class="italic text-sm text-purple-700 mb-3">Jesus is nailed to the cross and dies for our sins.</p>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead our-father-bead mr-2"></div><p class="prayer-text font-medium">Our Father...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><p class="prayer-text font-medium mb-1">10 Hail Marys:</p><div class="flex flex-wrap"><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead glory-be-bead mr-2"></div><p class="prayer-text font-medium">Glory Be...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm"><p class="prayer-text font-medium">(Optional) Fatima Prayer: O my Jesus...</p></div>
+            </div>
+        </section>
+
+        <section id="gloriousMysteriesContent" class="mystery-content-section hidden">
+            <h2 class="text-2xl font-semibold mb-4 text-center mystery-set-title">The Glorious Mysteries</h2>
+            <div class="mb-6 p-4 rounded-lg shadow-md mystery-card">
+                <h3 class="text-xl font-semibold mb-3 mystery-title">1. The Resurrection</h3>
+                <p class="italic text-sm text-purple-700 mb-3">Jesus rises from the dead.</p>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead our-father-bead mr-2"></div><p class="prayer-text font-medium">Our Father...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><p class="prayer-text font-medium mb-1">10 Hail Marys:</p><div class="flex flex-wrap"><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead glory-be-bead mr-2"></div><p class="prayer-text font-medium">Glory Be...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm"><p class="prayer-text font-medium">(Optional) Fatima Prayer: O my Jesus...</p></div>
+            </div>
+            <div class="mb-6 p-4 rounded-lg shadow-md mystery-card">
+                <h3 class="text-xl font-semibold mb-3 mystery-title">2. The Ascension</h3>
+                <p class="italic text-sm text-purple-700 mb-3">Jesus ascends into Heaven.</p>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead our-father-bead mr-2"></div><p class="prayer-text font-medium">Our Father...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><p class="prayer-text font-medium mb-1">10 Hail Marys:</p><div class="flex flex-wrap"><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead glory-be-bead mr-2"></div><p class="prayer-text font-medium">Glory Be...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm"><p class="prayer-text font-medium">(Optional) Fatima Prayer: O my Jesus...</p></div>
+            </div>
+            <div class="mb-6 p-4 rounded-lg shadow-md mystery-card">
+                <h3 class="text-xl font-semibold mb-3 mystery-title">3. The Descent of the Holy Spirit</h3>
+                <p class="italic text-sm text-purple-700 mb-3">The Holy Spirit comes upon the Apostles and Mary.</p>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead our-father-bead mr-2"></div><p class="prayer-text font-medium">Our Father...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><p class="prayer-text font-medium mb-1">10 Hail Marys:</p><div class="flex flex-wrap"><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead glory-be-bead mr-2"></div><p class="prayer-text font-medium">Glory Be...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm"><p class="prayer-text font-medium">(Optional) Fatima Prayer: O my Jesus...</p></div>
+            </div>
+            <div class="mb-6 p-4 rounded-lg shadow-md mystery-card">
+                <h3 class="text-xl font-semibold mb-3 mystery-title">4. The Assumption of Mary</h3>
+                <p class="italic text-sm text-purple-700 mb-3">Mary is taken body and soul into Heaven.</p>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead our-father-bead mr-2"></div><p class="prayer-text font-medium">Our Father...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><p class="prayer-text font-medium mb-1">10 Hail Marys:</p><div class="flex flex-wrap"><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead glory-be-bead mr-2"></div><p class="prayer-text font-medium">Glory Be...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm"><p class="prayer-text font-medium">(Optional) Fatima Prayer: O my Jesus...</p></div>
+            </div>
+            <div class="mb-6 p-4 rounded-lg shadow-md mystery-card">
+                <h3 class="text-xl font-semibold mb-3 mystery-title">5. The Coronation of Mary</h3>
+                <p class="italic text-sm text-purple-700 mb-3">Mary is crowned Queen of Heaven and Earth.</p>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead our-father-bead mr-2"></div><p class="prayer-text font-medium">Our Father...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><p class="prayer-text font-medium mb-1">10 Hail Marys:</p><div class="flex flex-wrap"><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span><span class="bead"></span></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm mb-2"><div class="flex items-center"><div class="bead glory-be-bead mr-2"></div><p class="prayer-text font-medium">Glory Be...</p></div></div>
+                <div class="p-3 bg-white rounded-md shadow-sm"><p class="prayer-text font-medium">(Optional) Fatima Prayer: O my Jesus...</p></div>
+            </div>
+        </section>
+
+        <section id="concludingPrayers" class="mb-6 p-4 rounded-lg shadow-md prayer-section">
+            <h2 class="text-2xl font-semibold mb-3 section-title">Concluding Prayers</h2>
+            <div class="mb-3 p-3 bg-white rounded-md shadow-sm">
+                <h3 class="font-semibold text-lg text-sky-700">1. Hail Holy Queen (Salve Regina)</h3>
+                <p class="prayer-text mt-1">Hail, Holy Queen, Mother of Mercy, our life, our sweetness and our hope! To thee do we cry, poor banished children of Eve; to thee do we send up our sighs, mourning and weeping in this valley of tears. Turn then, most gracious advocate, thine eyes of mercy toward us, and after this our exile, show unto us the blessed fruit of thy womb, Jesus. O clement, O loving, O sweet Virgin Mary! <br>V. Pray for us, O Holy Mother of God. <br>R. That we may be made worthy of the promises of Christ.</p>
+            </div>
+            <div class="mb-3 p-3 bg-white rounded-md shadow-sm">
+                <h3 class="font-semibold text-lg text-sky-700">2. Let Us Pray (The Rosary Prayer)</h3>
+                <p class="prayer-text mt-1">O God, whose only-begotten Son, by His life, death, and resurrection, has purchased for us the rewards of eternal life; grant, we beseech Thee, that meditating upon these mysteries of the Most Holy Rosary of the Blessed Virgin Mary, we may imitate what they contain and obtain what they promise, through the same Christ Our Lord. Amen.</p>
+            </div>
+            <div class="mb-3 p-3 bg-white rounded-md shadow-sm">
+                <h3 class="font-semibold text-lg text-sky-700">(Optional) For the intentions of the Holy Father:</h3>
+                <p class="prayer-text mt-1">Pray one Our Father, one Hail Mary, and one Glory Be.</p>
+                 <div class="mt-2">
+                    <div class="flex items-center mb-1"><div class="bead our-father-bead mr-2"></div><span class="prayer-text">Our Father...</span></div>
+                    <div class="flex items-center mb-1"><div class="bead mr-2"></div><span class="prayer-text">Hail Mary...</span></div>
+                    <div class="flex items-center"><div class="bead glory-be-bead mr-2"></div><span class="prayer-text">Glory Be...</span></div>
+                </div>
+            </div>
+            <div class="mb-3 p-3 bg-white rounded-md shadow-sm">
+                <h3 class="font-semibold text-lg text-sky-700">(Optional) St. Michael Prayer</h3>
+                <p class="prayer-text mt-1">Saint Michael the Archangel, defend us in battle. Be our protection against the wickedness and snares of the devil. May God rebuke him, we humbly pray; and do thou, O Prince of the Heavenly Host, by the power of God, cast into hell Satan and all the evil spirits who prowl about the world seeking the ruin of souls. Amen.</p>
+            </div>
+            <div class="p-3 bg-white rounded-md shadow-sm">
+                <h3 class="font-semibold text-lg text-sky-700">3. The Sign of the Cross</h3>
+                <p class="prayer-text mt-1">In the name of the Father, and of the Son, and of the Holy Spirit. Amen.</p>
+            </div>
+        </section>
+
+        <footer class="text-center mt-8 text-sm text-gray-500">
+            <p>May this Rosary guide bring you peace and reflection.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('.tab-button');
+            const mysteryContentSections = document.querySelectorAll('.mystery-content-section');
+            const currentDateTextEl = document.getElementById('currentDateText');
+            const currentDayMysteryTextEl = document.getElementById('currentDayMysteryText');
+
+            // Update current date
+            const today = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            currentDateTextEl.textContent = `Today is ${today.toLocaleDateString(undefined, options)}.`;
+
+            // Determine mysteries for today
+            const dayOfWeek = today.getDay(); // 0 (Sun) to 6 (Sat)
+            let defaultMysteryKey = 'joyful'; // Default to Joyful
+            let todaysMysteryName = "Joyful Mysteries";
+
+            switch (dayOfWeek) {
+                case 0: // Sunday
+                    defaultMysteryKey = 'glorious';
+                    todaysMysteryName = "Glorious Mysteries";
+                    break;
+                case 1: // Monday
+                    defaultMysteryKey = 'joyful';
+                    todaysMysteryName = "Joyful Mysteries";
+                    break;
+                case 2: // Tuesday
+                    defaultMysteryKey = 'sorrowful';
+                    todaysMysteryName = "Sorrowful Mysteries";
+                    break;
+                case 3: // Wednesday
+                    defaultMysteryKey = 'glorious';
+                    todaysMysteryName = "Glorious Mysteries";
+                    break;
+                case 4: // Thursday
+                    defaultMysteryKey = 'luminous';
+                    todaysMysteryName = "Luminous Mysteries";
+                    break;
+                case 5: // Friday
+                    defaultMysteryKey = 'sorrowful';
+                    todaysMysteryName = "Sorrowful Mysteries";
+                    break;
+                case 6: // Saturday
+                    defaultMysteryKey = 'joyful';
+                    todaysMysteryName = "Joyful Mysteries";
+                    break;
+            }
+            currentDayMysteryTextEl.textContent = `Today's suggested meditation: ${todaysMysteryName}`;
+
+            function showMystery(mysteryKey) {
+                mysteryContentSections.forEach(section => {
+                    section.classList.add('hidden');
+                });
+                tabs.forEach(tab => {
+                    tab.classList.remove('active');
+                });
+
+                const activeContent = document.getElementById(`${mysteryKey}MysteriesContent`);
+                const activeTab = document.querySelector(`.tab-button[data-mystery="${mysteryKey}"]`);
+
+                if (activeContent) {
+                    activeContent.classList.remove('hidden');
+                }
+                if (activeTab) {
+                    activeTab.classList.add('active');
+                }
+            }
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function () {
+                    const mysteryKey = this.dataset.mystery;
+                    showMystery(mysteryKey);
+                });
+            });
+
+            // Show default mystery for today
+            showMystery(defaultMysteryKey);
+        });
+    </script>
+
+</body>
+</html>
